@@ -1,0 +1,120 @@
+/* Reset */
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  font {
+    weight: inherit;
+    style: inherit;
+    family: inherit;
+  }
+}
+
+/* HTML5 Defaults */
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block;  
+}
+
+/* Basic element styles */
+
+body {
+  background: #eee;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border: {
+    collapse: collapse;
+    spacing: 0;
+  }
+}
+
+a {
+  text-decoration: none;  
+}
+
+a, button:focus, input, textarea, select {
+  outline: none;  
+}
+
+a img {
+  border: none;  
+}
+
+strong {
+  font-weight: bold;
+}
+
+em {
+  font-style: italic;  
+}
+
+form {
+  overflow: visible;  
+}
+
+label {
+  cursor: pointer;
+}
+
+input[type=hidden] {
+  display: none;
+}
+
+input[disabled='disabled'] {
+  color: #ccc;
+  background: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+address {
+  font-style: normal;
+}
+
+/* Base typography */
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: sans-serif;
+  font-size: 1.6em;
+  line-height: 1.6em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2em;
+  font-size: 2em;
+  margin-bottom: 0.5em;
+  text-shadow: 0px -1px 1px rgba(0,0,0,1);
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+p {
+  margin: 0 0 2rem;
+  text-shadow: 0px -1px 1px rgba(0,0,0,1);
+}
+
+label {
+  line-height: 2em;
+}
+
+.hidden {
+  display: none;
+}
