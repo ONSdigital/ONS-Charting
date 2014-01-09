@@ -1,0 +1,133 @@
+/* Reset */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline; }
+  html font, body font, div font, span font, object font, iframe font, h1 font, h2 font, h3 font, h4 font, h5 font, h6 font, p font, blockquote font, pre font, abbr font, address font, cite font, code font, del font, dfn font, em font, img font, ins font, kbd font, q font, samp font, small font, strong font, sub font, sup font, var font, b font, i font, dl font, dt font, dd font, ol font, ul font, li font, fieldset font, form font, label font, legend font, table font, caption font, tbody font, tfoot font, thead font, tr font, th font, td font, article font, aside font, canvas font, details font, figcaption font, figure font, footer font, header font, hgroup font, menu font, nav font, section font, summary font, time font, mark font, audio font, video font {
+    weight: inherit;
+    style: inherit;
+    family: inherit; }
+
+/* HTML5 Defaults */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+/* Basic element styles */
+body {
+  background: #eee;
+  color: #333;
+  margin: 0;
+  padding: 0; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+a {
+  text-decoration: none; }
+
+a, button:focus, input, textarea, select {
+  outline: none; }
+
+a img {
+  border: none; }
+
+strong {
+  font-weight: bold; }
+
+em {
+  font-style: italic; }
+
+form {
+  overflow: visible; }
+
+label {
+  cursor: pointer; }
+
+input[type=hidden] {
+  display: none; }
+
+input[disabled='disabled'] {
+  color: #ccc;
+  background: none; }
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0; }
+
+address {
+  font-style: normal; }
+
+/* Base typography */
+html {
+  font-size: 62.5%; }
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.6em;
+  line-height: 1.6em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility; }
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2em;
+  font-size: 2em;
+  margin-bottom: 0.5em;
+  text-shadow: 0px -1px 1px black; }
+
+h2 {
+  font-size: 1.5em; }
+
+p {
+  margin: 0 0 2rem;
+  text-shadow: 0px -1px 1px black; }
+
+label {
+  line-height: 2em; }
+
+.hidden {
+  display: none; }
+
+body {
+  padding: 40px;
+  letter-spacing: 1px;
+  text-align: left; }
+
+h1 {
+  width: 50%;
+  margin-bottom: 10px; }
+  h1 img {
+    width: 100%; }
+
+h3 {
+  font-size: 1.6em;
+  letter-spacing: 2.5px;
+  font-weight: 200; }
+
+address {
+  margin-bottom: 40px; }
+  address ul li {
+    margin-bottom: 15px; }
+
+section {
+  max-width: 650px; }
+
+#instagram {
+  max-width: 800px;
+  margin: 0 auto 80px auto;
+  overflow: auto; }
+  #instagram li {
+    float: left;
+    width: 50%;
+    margin: 0; }
+    #instagram li img {
+      width: 100%;
+      display: block; }
+
+.bspacer {
+  margin: 0 10px 0 10px; }
+
+.inline-logo {
+  margin-bottom: -6px; }
