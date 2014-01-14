@@ -48,3 +48,9 @@
     left: 0;
     right: 0;
     bottom: 0; }
+
+@media screen and (max-width: 640px) {
+  .ons-chart {
+    font-size: 13px; }
+    .ons-chart h1, .ons-chart h2, .ons-chart h3, .ons-chart h4, .ons-chart h5, .ons-chart h6, .ons-chart p {
+      text-align: left; } }
