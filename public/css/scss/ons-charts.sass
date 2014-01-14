@@ -1,6 +1,6 @@
 .ons-chart
   background-color: #fff
-  padding: 40px
+  padding: 30px
   font-family: 'Open Sans', sans-serif
   font-size: 16px /* Set to a fixed number to override any inherited font sizes */
   -webkit-font-smoothing: antialiased
@@ -11,6 +11,8 @@
     letter-spacing: -0.03em
     font-size: 2em
     margin-bottom: 0.25em
+    text-align: center
+    text-transform: uppercase
 
   h2, h3, h4, h5, h6 
     font-size: 1.3em
@@ -19,6 +21,7 @@
   p 
     margin: 0 0 1em
     letter-spacing: -0.02em
+    text-align: center
     
   table /* default styling for a visible table */
     border: 1px solid #ddd
@@ -38,3 +41,16 @@
     tr:last-child
       td
         border-bottom: 0
+        
+.ons-chart-wrap
+  position: relative
+  width: 100%
+  vertical-align: middle
+  overflow: hidden
+  svg
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+
