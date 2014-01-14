@@ -167,12 +167,23 @@
           
           createSVG();
           addWrapperPadding();
+          
+          var maxwidth = 0;
+          
+          $.each(instance.table.find('td'), function(i, e){
+            var newWidth = parseFloat($(e).html()) / 100;
+            if ( newWidth > maxwidth) {
+              maxwidth = newWidth;
+            }
+          });
+          
+          var widthMult = (100 / maxwidth) / 100;
 
           var y = 0;  
           $.each(instance.table.find('td'), function(i, e){
             var width = parseFloat($(e).html()) / 100;
             // Bars
-            var b = instance.svg.rect(0, y, settings.chart_size.x * width, 30, 5).attr({ 
+            var b = instance.svg.rect(0, y, (settings.chart_size.x * width) * widthMult, 30, 5).attr({ 
               fill: "#0088CE"
             });
             // Labels
@@ -187,7 +198,7 @@
             });
             
             var labelWidth = l.getBBox().width;
-            var barWidth = settings.chart_size.x * width;
+            var barWidth = (settings.chart_size.x * width) * widthMult;
             
             if (barWidth - labelWidth > 50) {
               instance.svg.text(
