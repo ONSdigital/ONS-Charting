@@ -189,9 +189,6 @@
             var labelWidth = l.getBBox().width;
             var barWidth = settings.chart_size.x * width;
             
-            console.log(barWidth);
-            console.log(labelWidth);
-
             if (barWidth - labelWidth > 50) {
               instance.svg.text(
                 barWidth, 
@@ -215,8 +212,6 @@
                 'fill': '#444'
               });
             }
-
-
 
             y+=jump;
           });
