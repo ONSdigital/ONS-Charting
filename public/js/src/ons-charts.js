@@ -77,7 +77,7 @@
           };
           createSVG();
           addWrapperPadding();
-          var count = instance.table.find('tr').first().find('th').length;
+          var count = instance.table.find('th').length;
           var spacer = settings.chart_size.x/100;
           var jump = (settings.chart_size.x+spacer)/count;
           // Lines
@@ -152,7 +152,7 @@
         }
         
         var barChartV = function() {
-          var count = instance.table.find('tr').first().find('th').length;
+          var count = instance.table.find('th').length;
           var jump = 90;
 
           settings.base_size = {
