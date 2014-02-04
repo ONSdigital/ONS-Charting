@@ -8,38 +8,41 @@
 
 		var pluginName = "onsc",
 				defaults = {
-				breakpoint: 640,
-				overBreakpoint: true
+				breakpoint: 640, // Screen width at which the change to narrow view happens
+				overBreakpoint: true // Needs a default, may as well be this.
 		};
 
 		function Plugin ( element, options ) {
-				this.element = element;
-				this.$el = $(element);
-				this.settings = $.extend( {}, defaults, options );
-				this.instance = {};
+				this.element = element; // Reference to chart html element
+				this.$el = $(element); // jQuery object of the above element
+				this.settings = $.extend( {}, defaults, options ); // Standard jQuery plugin settings extend
+				this.instance = {}; // So each instance is a seperate entity
 				this._defaults = defaults;
 				this._name = pluginName;
-				this.init();
+				this.init(); // Kick off!
 		}
 
 		Plugin.prototype = {
 				init: function () {
-						this.settings.overBreakpoint = this.overBreakpoint();
-						this.instance.table = this.$el.find('table');
-						var that = this;
+						this.settings.overBreakpoint = this.overBreakpoint(); // Check if over breakpoint
+						this.instance.table = this.$el.find('table'); // Find the data table TODO throw polite error if no table
+						var that = this; // Crockford! http://javascript.crockford.com/private.html
 						$(window).resize(function(){
               that.checkBreakpoint();
             });
-            this.create();
+            this.create(); // Start the creation process
 				},
-        supported: function() {
+        supported: function() { 
+          // Simple check to see if the browser can render SVG
           return !! document.createElementNS &&
                  !! document.createElementNS('http://www.w3.org/2000/svg','svg').createSVGRect
         },
         overBreakpoint: function() {
+          // Checks against setting and current viewport, returns true or false
           return $( window ).width() > this.settings.breakpoint;
         },
         checkBreakpoint: function() {
+          // Only does anything if the overBreakpoint changes value. Should only trigger once as it passes in either direction
           if (this.settings.overBreakpoint != this.overBreakpoint()) {
             this.settings.overBreakpoint = this.overBreakpoint();
             this.destroy();
@@ -47,33 +50,55 @@
           }
         },
         createSVG: function() {
+          // Creates the SVG element and gives it Snap capabilites.
           this.instance.rid = "ons-rid-"+(Math.random().toString(36)+'00000000000000000').slice(2, 5+2);
           this.instance.chartWrap = $('<div class="ons-chart-wrap"><svg viewBox="0 0 '+this.settings.base_size.x+' '+this.settings.base_size.y+'" preserveAspectRatio="xMinYMin meet" id="'+this.instance.rid+'"></svg></div>');
           this.$el.append(this.instance.chartWrap);
           this.instance.svg = Snap("#"+this.instance.rid);
         },
         addWrapperPadding: function() {
+          // Works out what padding to give the wrapper Div to enable responsive SVGs. http://demosthenes.info/blog/744/Make-SVG-Responsive
           var padding = (this.settings.base_size.y / this.settings.base_size.x) * 100;
           this.instance.chartWrap.css({
             'padding-bottom': padding+"%"
           });
         },
         destroy: function() {
+          // Removes the chart element from the DOM
           this.instance.chartWrap.remove();
         },
         create: function() {
+          // Simple wrapper to check class and trigger the correct chart builder. Should this be a switch? Maybe, maybe not. Depends on who you listen to
           if (this.supported()) {
             if (this.$el.hasClass('ons-bar')) {
+              this.instance.table.hide(); // Don't DRY this! You only want to hide the table if SVG is supported *AND* it has a chart class.
+              this.barChart();
+            }
+            if (this.$el.hasClass('ons-bar-alt')) {
               this.instance.table.hide();
-              if ( this.settings.overBreakpoint ) {
-                this.barChartH();
-              } else {
-                this.barChartV();
-              }
+              this.barChartAlt();
             }
           }
         },
-        barChartH: function() {
+        barChart: function() {
+          // Trigger the right chart creation for the current breakpoint status
+          if ( this.settings.overBreakpoint ) {
+            this.barChartW();
+          } else {
+            this.barChartN();
+          }
+        },
+        barChartAlt: function() {
+          // Trigger the right chart creation for the current breakpoint status
+          if ( this.settings.overBreakpoint ) {
+            this.barChartAltW();
+          } else {
+            this.barChartAltN();
+          }
+        },
+        barChartW: function() {
+          // Chart for low value count (10 or less), vertical bars in a large screen configuration. Labels underneath
+          // Sizes are relative as the resulting SVG is responsive
           this.settings.base_size = {
             'x': 1280,
             'y': 720,
@@ -85,10 +110,11 @@
           };
           this.createSVG();
           this.addWrapperPadding();
-          var count = this.instance.table.find('th').length;
-          var spacer = this.settings.chart_size.x/100;
-          var jump = (this.settings.chart_size.x+spacer)/count;
-          // Lines
+          var count = this.instance.table.find('th').length; // Find how many headers there are, assumes a single layer of data
+          var spacer = this.settings.chart_size.x/100; // Gap between the bars
+          var jump = (this.settings.chart_size.x+spacer)/count; // Distance between each bar's start coordinate
+          
+          // Draw the value lines
           this.instance.svg.line(
             0, 
             0, 
@@ -96,39 +122,50 @@
             0).attr({
               stroke: "#999999",
               'stroke-dasharray': "3,3"
-            });
-            this.instance.svg.line(
+          });
+          this.instance.svg.line(
               0, 
               this.settings.chart_size.y/2, 
               this.settings.chart_size.x, 
               this.settings.chart_size.y/2).attr({
                 stroke: "#999999",
                 'stroke-dasharray': "3,3"
-            });
-            this.instance.svg.line(
+          });
+          // This line sits under the bars rather than exactly on the x-axis
+          this.instance.svg.line(
               0, 
               this.settings.chart_size.y+2, 
               this.settings.chart_size.x, 
               this.settings.chart_size.y+2).attr({
                 stroke: "#999999",
                 'stroke-width': "4"
-            });
+          });
           
-          // Bars
+          // Draw the bars
           var x = 0;
           var that = this;
+          // Loop through each found TD element
           $.each(this.instance.table.find('td'), function(i, e){
-            var height = parseFloat($(e).html()) / 100;
-            var r = that.instance.svg.rect(x, that.settings.chart_size.y - (that.settings.chart_size.y * height), jump-spacer, that.settings.chart_size.y * height, 5);
+            var height = parseFloat($(e).html()) / 100; // Take the percentage value and convert to a decimal
+            // Draw the bar, and store a ref to all for styling later
+            var r = that.instance.svg.rect(
+              x, 
+              that.settings.chart_size.y - (that.settings.chart_size.y * height), 
+              jump-spacer, 
+              that.settings.chart_size.y * height, 
+              5 // This is the border radius of the rounded rectangle
+            );
+            // Style the bar
             r.attr({ 
               fill: "#0088CE"
             });
-            x+=jump;
+            x+=jump; // increment the base x position by the amount defined above
           });
           
-          // Labels
+          // Draw the labels under the x-axis
           x = 0;
           $.each(this.instance.table.find('th'), function(i, e){
+            // Draw the label centered under the bar, and store a ref to all for styling later
             var t = that.instance.svg.text(
               x + (jump/2) - spacer, 
               that.settings.base_size.y - ((that.settings.base_size.y - that.settings.chart_size.y) / 1.7),
@@ -142,7 +179,7 @@
             x+=jump;
           });
           
-          // Values
+          // Get values and draw bars
           x = 0;
           $.each(this.instance.table.find('td'), function(i, e){
             var t = that.instance.svg.text(
@@ -159,8 +196,10 @@
             x+=jump;
           });
         },
-        
-        barChartV: function() {
+        barChartN: function() {
+          // Chart for low value count (10 or less), vertical bars in a narrow screen configuration. Bars horizontal, labels underneath.
+          // Sizes are relative as the resulting SVG is responsive
+          
           var count = this.instance.table.find('th').length;
           var jump = 90;
 
@@ -208,10 +247,12 @@
                 'fill': '#666'
             });
             
-            var labelWidth = l.getBBox().width;
-            var barWidth = (that.settings.chart_size.x * width) * widthMult;
+            // Move value labels to align right with the bar length, unless that means they overlap the title labels.
             
-            if (barWidth - labelWidth > 50) {
+            var labelWidth = l.getBBox().width; // Get description text label width
+            var barWidth = (that.settings.chart_size.x * width) * widthMult; // Get bar width
+            
+            if (barWidth - labelWidth > 50) { // 50px is the breathing space between description and value
               that.instance.svg.text(
                 barWidth, 
                 y+60,
@@ -234,13 +275,338 @@
                 'fill': '#444'
               });
             }
-
             y+=jump;
           });
+        },
+        barChartAltW: function() {
+          var count = this.instance.table.find('th').length;
+          var jump = 30;
           
-        }
+          this.settings.base_size = {
+            'x': 640,
+            'y': jump * count + (jump * 2.5),
+          };
+          
+          this.createSVG();
+          this.addWrapperPadding();
+          
+          var maxValue = 0;
+          var labelSpace = 0;
+          
+          var y = 0;
+          
+          // Find highest number
+          
+          var that = this;
 
+          $.each(this.instance.table.find('td'), function(i, e){
+            var newMax = parseFloat($(e).html()) / 100;
+            if ( newMax > maxValue) {
+              maxValue = newMax;
+            }
+            
+            var l = that.instance.svg.text(
+              -100,
+              -100,
+              $(that.instance.table.find('th')[i]).text()
+            );
+            
+            if ( l.getBBox().width > labelSpace) labelSpace = l.getBBox().width
+            
+            l.remove();
+            
+          });
+          
+          labelSpace += 40;
+          
+          this.settings.chart_size = {
+            'x': 640 - labelSpace,
+            'y': jump * count + jump,
+          };
+          
+          
+          var maxScale = (Math.round(maxValue*10)/10);
 
+          // Draw Lines and Legend
+          
+          for (x = 0; x <= 1; x+=0.25) {
+            this.instance.svg.line(
+              labelSpace+this.settings.chart_size.x*x, 
+              30, 
+              labelSpace+this.settings.chart_size.x*x, 
+              this.settings.chart_size.y).attr({
+                stroke: "#999999",
+                'stroke-dasharray': "3,3"
+            });
+            
+            var labelx = this.settings.chart_size.x*x;
+            var textAnchor = "middle";
+            
+            if (x == 0) {
+              textAnchor = 'start';
+            }
+
+            if (x == 1) {
+              textAnchor = 'end';
+            }
+
+            var l = that.instance.svg.text(
+              labelSpace+labelx,
+              23,
+              Math.round(x * maxScale * 100) + "%"
+            ).attr({
+                'font-size': '20px',
+                'font-weight': "bold",
+                'text-anchor': textAnchor,
+                'fill': '#939598'
+            });
+
+            var l = that.instance.svg.text(
+              labelSpace+labelx,
+              this.settings.base_size.y - 5,
+              Math.round(x * maxScale * 100) + "%"
+            ).attr({
+                'font-size': '20px',
+                'font-weight': "bold",
+                'text-anchor': textAnchor,
+                'fill': '#939598'
+            });
+          }
+          $.each(this.instance.table.find('td'), function(i, e){
+            var width = parseFloat($(e).html()) / maxScale;
+            
+            // Bars
+            var fillColour = "#90B0C9";
+            if ($(e).hasClass('highlight')) {
+             fillColour = "#FF950E";
+            }
+            
+            var b = that.instance.svg.rect(labelSpace, y+50, (that.settings.chart_size.x * width) / 100, 20, 5).attr({ 
+              fill: fillColour,
+              cursor: 'pointer'
+            });
+            
+            // Labels
+            
+            var textColour = '#222'
+            
+            if (i%2 == 1) {
+              textColour = '#666'
+            }
+            
+            var l = that.instance.svg.text(
+              0,
+              y+67,
+              $(that.instance.table.find('th')[i]).text()
+            ).attr({
+                'font-size': '20px',
+                'text-anchor': 'left',
+                'fill': textColour
+            });
+            
+            // Hovers
+            that.hoverLabel(b, that, width, y-17, i, e, labelSpace);
+            y+=jump;
+          });
+        },
+        barChartAltN: function() {
+          var count = this.instance.table.find('th').length;
+          var jump = 52;
+          
+          this.settings.base_size = {
+            'x': 640,
+            'y': jump * count + (jump * 1.5),
+          };
+          
+          this.settings.chart_size = {
+            'x': 640,
+            'y': jump * count + jump,
+          };
+                    
+          this.createSVG();
+          this.addWrapperPadding();
+          
+          var maxValue = 0;
+          var labelSpace = 0;
+          
+          var y = 0;
+          
+          // Find highest number
+          
+          var that = this;
+
+          $.each(this.instance.table.find('td'), function(i, e){
+            var newMax = parseFloat($(e).html()) / 100;
+            if ( newMax > maxValue) {
+              maxValue = newMax;
+            }
+          });
+          
+          var maxScale = (Math.round(maxValue*10)/10);
+
+          // Draw Lines and Legend
+          
+          for (x = 0; x <= 1; x+=0.25) {
+            this.instance.svg.line(
+              this.settings.base_size.x*x, 
+              30, 
+              this.settings.base_size.x*x, 
+              this.settings.chart_size.y).attr({
+                stroke: "#999999",
+                'stroke-dasharray': "3,3"
+            });
+            
+            var labelx = this.settings.base_size.x*x;
+            var textAnchor = "middle";
+            
+            if (x == 0) {
+              textAnchor = 'start';
+            }
+
+            if (x == 1) {
+              textAnchor = 'end';
+            }
+
+            var l = that.instance.svg.text(
+              labelx,
+              23,
+              Math.round(x * maxScale * 100) + "%"
+            ).attr({
+                'font-size': '20px',
+                'font-weight': "bold",
+                'text-anchor': textAnchor,
+                'fill': '#939598'
+            });
+
+            var l = that.instance.svg.text(
+              labelx,
+              this.settings.base_size.y - 5,
+              Math.round(x * maxScale * 100) + "%"
+            ).attr({
+                'font-size': '20px',
+                'font-weight': "bold",
+                'text-anchor': textAnchor,
+                'fill': '#939598'
+            });
+
+          }
+
+          $.each(this.instance.table.find('td'), function(i, e){
+            var width = parseFloat($(e).html()) / maxScale;
+            
+            // Bars
+            var fillColour = "#90B0C9";
+            if ($(e).hasClass('highlight')) {
+             fillColour = "#FF950E";
+            }
+            
+            var b = that.instance.svg.rect(0, y+67, (that.settings.chart_size.x * width) / 100, 20, 5).attr({ 
+              fill: fillColour,
+              cursor: 'pointer'
+            });
+            
+            // Labels
+            
+            var textColour = '#222'
+            
+            if (i%2 == 1) {
+              textColour = '#666'
+            }
+            
+            var l = that.instance.svg.text(
+              0,
+              y+60,
+              $(that.instance.table.find('th')[i]).text()
+            ).attr({
+                'font-size': '20px',
+                'text-anchor': 'left',
+                'fill': textColour
+            });
+            
+            // Hovers
+            
+            that.hoverLabel(b, that, width, y, i, e, 0);
+                      
+            y+=jump;
+          });
+        },
+        hoverLabel: function(b, that, width, y, i, e, labelSpace){
+          var hoverSpot = that.instance.svg.circle(
+            labelSpace + ((that.settings.chart_size.x * width) / 100) * 0.5, 
+            y+77, 
+            12);
+          
+          var yrect = y-27
+          
+          // if ( y < 50) {
+          //   yrect = y + 120;
+          // }   
+          
+          var hoverLine = that.instance.svg.line(
+            labelSpace + ((that.settings.chart_size.x * width) / 100) * 0.5, 
+            y+77, 
+            labelSpace + ((that.settings.chart_size.x * width) / 100) * 0.5, 
+            yrect).attr({
+              stroke: "#000",
+              strokeWidth: 3,
+              'stroke-dasharray': "0,0"
+          });
+            
+          var hoverRect = that.instance.svg.rect(
+              labelSpace + that.settings.chart_size.x * 0.05, 
+              yrect, 
+              that.settings.chart_size.x * 0.9, 87, 5)
+            .attr({ 
+              fill: "white",
+              stroke: "black",
+              strokeWidth: 3
+            });
+            
+          var hoverLabelA = that.instance.svg.text(
+              labelSpace+45,
+              yrect + 33,
+              $(that.instance.table.find('th')[i]).text()
+            ).attr({
+                'font-size': '25px',
+                'font-weight': 'bold',
+                'text-anchor': 'left',
+                'fill': "#333"
+            });
+            
+          var hoverLabelB = that.instance.svg.text(
+                labelSpace + 45,
+                yrect + 70,
+                $(e).html()
+              ).attr({
+                  'font-size': '40px',
+                  'font-weight': 'bold',
+                  'text-anchor': 'left',
+                  'fill': "#333"
+              });
+          
+          
+          var g = that.instance.svg.group(
+            hoverSpot,
+            hoverLine,
+            hoverRect,
+            hoverLabelA,
+            hoverLabelB
+          ).attr({
+            visibility: 'hidden'
+          });
+          
+          b.hover(function(){
+            g.attr({
+              visibility: 'visible'
+            });
+          },function(){
+            g.attr({
+              visibility: 'hidden'
+            });
+          });
+          
+          return g;
+        } 
 		};
 
 		$.fn[ pluginName ] = function ( options ) {
