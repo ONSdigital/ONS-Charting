@@ -20,8 +20,7 @@
 				this._defaults = defaults;
 				this._name = pluginName;
         
-        // Define Colour Options
-
+        // Define Colour Cycle Options
 				this.settings.colours=[];
 				this.settings.colours[0] = ["#0084D1"]
 				this.settings.colours[1] = ["#0084D1", "#FF950E", "#A9BE3A", "#FFD320"]
@@ -80,10 +79,17 @@
         },
         defineColours: function($table) {
           if ($table.hasClass('ons-colour')) {
-            return this.settings.colours[1];
+            this.instance.colours = this.settings.colours[1];
           } else {
-            return this.settings.colours[0];
+            this.instance.colours = this.settings.colours[0];
           }
+          this.instance.colourIndex = -1;
+        },
+        cycleColours: function() {
+          // Set Fill Colour
+          this.instance.colourIndex++
+          if (this.instance.colourIndex >= this.instance.colours.length) this.instance.colourIndex = 0;
+          return this.instance.colours[this.instance.colourIndex];
         },
         destroy: function() {
           // Removes the chart element from the DOM
@@ -175,17 +181,12 @@
           var x = 0;
           var that = this;
           
-          var colours = this.defineColours($table);
-          var colourIndex = 0;
+          this.defineColours($table);
           
           // Loop through each found TD element
           $.each($table.find('td'), function(i, e){
             
-            // Set Fill Colour
-            var colour = colours[colourIndex];
-            colourIndex++
-            if (colourIndex >= colours.length) colourIndex = 0;
-            
+            var colour = that.cycleColours();
             
             var height = that.sanitizeNumber($(e).html()) / 100; // Take the percentage value and convert to a decimal
             // Draw the bar, and store a ref to all for styling later
@@ -276,12 +277,11 @@
           var colours = this.defineColours($table);
           var colourIndex = 0;
           
+          this.defineColours($table);
+          
           $.each($table.find('td'), function(i, e){
 
-            // Set Fill Colour
-            var colour = colours[colourIndex];
-            colourIndex++
-            if (colourIndex >= colours.length) colourIndex = 0;
+            var colour = that.cycleColours();
 
             var width = that.sanitizeNumber($(e).html());
             width *= 0.01;
