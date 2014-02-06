@@ -1,254 +1,326 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>ONS Charting Prototype</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="css/app.css"/>
-    <link rel="stylesheet" href="css/ons-charts.css"/>
-    <script src="js/jquery-1.10.2.js"></script>
-    <script src="js/snap.svg-min.js"></script>
-    <script src="js/src/jquery.ons-charts.js"></script>
-    <script src="js/app.js"></script>
-</head>
-<body>
-  <section>
-    <p>Basic Structure, No Chart. No JS / SVG fallback</p>
-    <article class="ons-chart">
-      <h1>What was recieved?</h1>
-      <p>Nearly 9 in 10 inheritances included money/saving</p>
-      <table>
-        <tr>
-          <th>Money Savings</th>
-          <th>Property</th>
-          <th>Personal items</th>
-          <th>Stocks/Shares</th>
-        </tr>
-        <tr>
-          <td>88.4%</td>
-          <td>19.5%</td>
-          <td>12.4%</td>
-          <td>6.5%</td>
-        </tr>
-       </table>
-    </article>
-  </section>
-  <section>
-    <p>Basic Bar Chart</p>
-    <article class="ons-chart ons-bar">
-      <h1>What was received?</h1>
-      <h2>(Open Sans Bold)</h2>
-      <p>Nearly 9 in 10 inheritances included money/saving</p>
-      <table>
-        <tr>
-          <th>Money Savings</th>
-          <th>Property</th>
-          <th>Personal items</th>
-          <th>Stocks/Shares</th>
-        </tr>
-        <tr>
-          <td>88.4%</td>
-          <td>19.5%</td>
-          <td>12.4%</td>
-          <td>6.5%</td>
-        </tr>
-       </table>
-    </article>
-  </section>
-  <section>
-    <p>Basic Bar Chart - More Items</p>
-    <article class="ons-chart ons-bar">
-      <h1>What was received?</h1>
-      <h2>(Open Sans Bold)</h2>
-      <p>Nearly 9 in 10 inheritances included money/saving</p>
-      <table>
-        <tr>
-          <th>Money Savings</th>
-          <th>Property</th>
-          <th>Personal items</th>
-          <th>Stocks/Shares</th>
-          <th>Other</th>
-        </tr>
-        <tr>
-          <td>88.4%</td>
-          <td>19.5%</td>
-          <td>12.4%</td>
-          <td>6.5%</td>
-          <td>1.5%</td>
-        </tr>
-       </table>
-    </article>
-  </section>
-  <section>
-    <p>Basic Bar Chart, alternative table layout test</p>
-    <article class="ons-chart">
-      <h1>What was received?</h1>
-      <h2>(Open Sans Bold)</h2>
-      <p>Nearly 9 in 10 inheritances included money/saving</p>
-      <table>
-        <tr>
-          <th>Money Savings</th>
-          <td>88.4%</td>
-        </tr>
-        <tr>
-          <th>Property</th>
-          <td>19.5%</td>
-        </tr>
-        <tr>
-          <th>Personal items</th>
-          <td>12.4%</td>
-        </tr>
-        <tr>
-          <th>Stocks/Shares</th>
-          <td>6.5%</td>
-        </tr>
-       </table>
-    </article>
-  </section>
-  <section>
-    <p>Basic Bar Chart, alternative table layout test</p>
-    <article class="ons-chart ons-bar">
-      <h1>What was received?</h1>
-      <h2>(Open Sans Bold)</h2>
-      <p>Nearly 9 in 10 inheritances included money/saving</p>
-      <table>
-        <tr>
-          <th>Money Savings</th>
-          <td>88.4%</td>
-        </tr>
-        <tr>
-          <th>Property</th>
-          <td>19.5%</td>
-        </tr>
-        <tr>
-          <th>Personal items</th>
-          <td>12.4%</td>
-        </tr>
-        <tr>
-          <th>Stocks/Shares</th>
-          <td>6.5%</td>
-        </tr>
-       </table>
-    </article>
-  </section>
-  <section>
-    <p>Alternate Bar Chart (more data layout, auto scale)</p>
-    <article class="ons-chart ons-bar-alt">
-      <h1>Comparing families with 3 or more dependant children across Europe</h1>
-      <table>
-        <tr>
-          <th>Netherlands</th>
-          <td>19%</td>
-        </tr>
-        <tr>
-          <th>Ireland</th>
-          <td>19%</td>
-        </tr>
-        <tr>
-          <th>Cyprus</th>
-          <td>18%</td>
-        </tr>
-        <tr>
-          <th>Belgium</th>
-          <td>18%</td>
-        </tr>
-        <tr>
-          <th>Finland</th>
-          <td>18%</td>
-        </tr>
-        <tr>
-          <th>France</th>
-          <td>17%</td>
-        </tr>
-        <tr>
-          <th>UK</th>
-          <td class="highlight">15%</td>
-        </tr>
-        <tr>
-          <th>Denmark</th>
-          <td>15%</td>
-        </tr>
-        <tr>
-          <th>Sweden</th>
-          <td>14%</td>
-        </tr>
-        <tr>
-          <th>Austria</th>
-          <td>13%</td>
-        </tr>
-        <tr>
-          <th>Hungary</th>
-          <td>13%</td>
-        </tr>
-        <tr>
-          <th>Luxemboug</th>
-          <td>13%</td>
-        </tr>
-        <tr>
-          <th>Germany</th>
-          <td>12%</td>
-        </tr>
-        <tr>
-          <th>Poland</th>
-          <td>11%</td>
-        </tr>
-        <tr>
-          <th>Slovakia</th>
-          <td>10%</td>
-        </tr>
-        <tr>
-          <th>Slovenia</th>
-          <td>10%</td>
-        </tr>
-        <tr>
-          <th>Estonia</th>
-          <td>10%</td>
-        </tr>
-        <tr>
-          <th>Malta</th>
-          <td>9%</td>
-        </tr>
-        <tr>
-          <th>Romania</th>
-          <td>9%</td>
-        </tr>
-        <tr>
-          <th>Latvia</th>
-          <td>9%</td>
-        </tr>
-        <tr>
-          <th>Lithuania</th>
-          <td>8%</td>
-        </tr>
-        <tr>
-          <th>Czech Republic</th>
-          <td>8%</td>
-        </tr>
-        <tr>
-          <th>Portugal</th>
-          <td>7%</td>
-        </tr>
-        <tr>
-          <th>Italy</th>
-          <td>7%</td>
-        </tr>
-        <tr>
-          <th>Bulgaria</th>
-          <td>7%</td>
-        </tr>
-        <tr>
-          <th>Spain</th>
-          <td>5%</td>
-        </tr>
-        <tr>
-          <th>Greece</th>
-          <td>4%</td>
-        </tr>
-       </table>
-    </article>
-  </section>
-</body>
+  <head>
+      <meta charset="utf-8">
+      <title>ONS Charting Prototype</title>
+      <meta name="viewport" content="width=device-width,initial-scale=1.0">
+      <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+      <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+      <link rel="stylesheet" href="css/app.css"/>
+      <link rel="stylesheet" href="css/ons-charts.css"/>
+      <script src="js/jquery-1.10.2.js"></script>
+      <script src="js/snap.svg-min.js"></script>
+      <script src="js/src/jquery.ons-charts.js"></script>
+      <script src="js/app.js"></script>
+  </head>
+  <body>
+    <section>
+      <p>Basic Structure, No Chart. No JS / SVG fallback</p>
+      <article class="ons-chart">
+        <h1>What was recieved?</h1>
+        <p>Nearly 9 in 10 inheritances included money/saving</p>
+        <table>
+          <tr>
+            <th>Money Savings</th>
+            <th>Property</th>
+            <th>Personal items</th>
+            <th>Stocks/Shares</th>
+          </tr>
+          <tr>
+            <td>88.4%</td>
+            <td>19.5%</td>
+            <td>12.4%</td>
+            <td>6.5%</td>
+          </tr>
+         </table>
+      </article>
+    </section>
+    <section>
+      <p>Basic Bar Chart</p>
+      <article class="ons-chart">
+        <h1>What was received?</h1>
+        <h2>(Open Sans Bold)</h2>
+        <p>Nearly 9 in 10 inheritances included money/saving</p>
+        <table class="ons-bar">
+          <tr>
+            <th>Money Savings</th>
+            <th>Property</th>
+            <th>Personal items</th>
+            <th>Stocks/Shares</th>
+          </tr>
+          <tr>
+            <td>88.4%</td>
+            <td>19.5%</td>
+            <td>12.4%</td>
+            <td>6.5%</td>
+          </tr>
+         </table>
+      </article>
+    </section>
+    <section>
+      <p>Basic Bar Chart - More Items</p>
+      <article class="ons-chart">
+        <h1>What was received?</h1>
+        <h2>(Open Sans Bold)</h2>
+        <p>Nearly 9 in 10 inheritances included money/saving</p>
+        <table class="ons-bar">
+          <tr>
+            <th>Money Savings</th>
+            <th>Property</th>
+            <th>Personal items</th>
+            <th>Stocks/Shares</th>
+            <th>Other</th>
+          </tr>
+          <tr>
+            <td>88.4%</td>
+            <td>19.5%</td>
+            <td>12.4%</td>
+            <td>6.5%</td>
+            <td>1.5%</td>
+          </tr>
+         </table>
+      </article>
+    </section>
+    <section>
+      <p>Basic Bar Chart, alternative table layout test</p>
+      <article class="ons-chart">
+        <h1>What was received?</h1>
+        <h2>(Open Sans Bold)</h2>
+        <p>Nearly 9 in 10 inheritances included money/saving</p>
+        <table>
+          <tr>
+            <th>Money Savings</th>
+            <td>88.4%</td>
+          </tr>
+          <tr>
+            <th>Property</th>
+            <td>19.5%</td>
+          </tr>
+          <tr>
+            <th>Personal items</th>
+            <td>12.4%</td>
+          </tr>
+          <tr>
+            <th>Stocks/Shares</th>
+            <td>6.5%</td>
+          </tr>
+         </table>
+      </article>
+    </section>
+    <section>
+      <p>Basic Bar Chart, alternative table layout test</p>
+      <article class="ons-chart">
+        <h1>What was received?</h1>
+        <h2>(Open Sans Bold)</h2>
+        <p>Nearly 9 in 10 inheritances included money/saving</p>
+        <table class="ons-bar">
+          <tr>
+            <th>Money Savings</th>
+            <td>88.4%</td>
+          </tr>
+          <tr>
+            <th>Property</th>
+            <td>19.5%</td>
+          </tr>
+          <tr>
+            <th>Personal items</th>
+            <td>12.4%</td>
+          </tr>
+          <tr>
+            <th>Stocks/Shares</th>
+            <td>6.5%</td>
+          </tr>
+         </table>
+      </article>
+    </section>
+    <section>
+      <p>Alternate Bar Chart (more data layout, auto scale)</p>
+      <article class="ons-chart">
+        <h1>Comparing families with 3 or more dependant children across Europe</h1>
+        <table class="ons-bar-alt">
+          <tr>
+            <th>Netherlands</th>
+            <td>19%</td>
+          </tr>
+          <tr>
+            <th>Ireland</th>
+            <td>19%</td>
+          </tr>
+          <tr>
+            <th>Cyprus</th>
+            <td>18%</td>
+          </tr>
+          <tr>
+            <th>Belgium</th>
+            <td>18%</td>
+          </tr>
+          <tr>
+            <th>Finland</th>
+            <td>18%</td>
+          </tr>
+          <tr>
+            <th>France</th>
+            <td>17%</td>
+          </tr>
+          <tr>
+            <th>UK</th>
+            <td class="highlight">15%</td>
+          </tr>
+          <tr>
+            <th>Denmark</th>
+            <td>15%</td>
+          </tr>
+          <tr>
+            <th>Sweden</th>
+            <td>14%</td>
+          </tr>
+          <tr>
+            <th>Austria</th>
+            <td>13%</td>
+          </tr>
+          <tr>
+            <th>Hungary</th>
+            <td>13%</td>
+          </tr>
+          <tr>
+            <th>Luxemboug</th>
+            <td>13%</td>
+          </tr>
+          <tr>
+            <th>Germany</th>
+            <td>12%</td>
+          </tr>
+          <tr>
+            <th>Poland</th>
+            <td>11%</td>
+          </tr>
+          <tr>
+            <th>Slovakia</th>
+            <td>10%</td>
+          </tr>
+          <tr>
+            <th>Slovenia</th>
+            <td>10%</td>
+          </tr>
+          <tr>
+            <th>Estonia</th>
+            <td>10%</td>
+          </tr>
+          <tr>
+            <th>Malta</th>
+            <td>9%</td>
+          </tr>
+          <tr>
+            <th>Romania</th>
+            <td>9%</td>
+          </tr>
+          <tr>
+            <th>Latvia</th>
+            <td>9%</td>
+          </tr>
+          <tr>
+            <th>Lithuania</th>
+            <td>8%</td>
+          </tr>
+          <tr>
+            <th>Czech Republic</th>
+            <td>8%</td>
+          </tr>
+          <tr>
+            <th>Portugal</th>
+            <td>7%</td>
+          </tr>
+          <tr>
+            <th>Italy</th>
+            <td>7%</td>
+          </tr>
+          <tr>
+            <th>Bulgaria</th>
+            <td>7%</td>
+          </tr>
+          <tr>
+            <th>Spain</th>
+            <td>5%</td>
+          </tr>
+          <tr>
+            <th>Greece</th>
+            <td>4%</td>
+          </tr>
+         </table>
+      </article>
+    </section>
+    <section>
+      <p>Mixed icons, charts and text</p>
+      <article class="ons-chart">
+        <h1>2011 VS 2012</h1>
+        <p>In 2011, the average household spend was £497 per week. Transport has been the longstanding highest spend, but in 2012 the biggest spend was on housing, fuel and power (excluding mortgages). Adjustments have been made for inflation and all these figures are at 2012 prices.</p>
+        <i class="ons-icon onsi-housing"></i>
+        <h2>Housing, fuel and power (excluding mortgages)</h2>
+        <p>E.g. households spent on average £10.80 on electricity and £10.40 on gas per week in 2012.</p>
+        <table class="ons-bar ons-horizontal-only">
+          <tr>
+            <th>2011</th>
+            <td>£66.40</td>
+          </tr>
+          <tr>
+            <th>2012</th>
+            <td>£68.00</td>
+          </tr>
+        </table>
+        <i class="ons-icon onsi-transport"></i>
+        <h2>Transport</h2>
+        <p>E.g. households spent on average £24.70 on petrol, diesel and other motor oils per week in 2012.</p>
+        <table class="ons-bar ons-horizontal-only">
+          <tr>
+            <th>2011</th>
+            <td>£67.20</td>
+          </tr>
+          <tr>
+            <th>2012</th>
+            <td>£64.10</td>
+          </tr>
+        </table>
+        <i class="ons-icon onsi-recreation"></i>
+        <h2>Recreation and culture</h2>
+        <p>E.g. households spent on average £18.20 on package hoildays per week in 2012.</p>
+        <table class="ons-bar ons-horizontal-only">
+          <tr>
+            <th>2011</th>
+            <td>£54.00</td>
+          </tr>
+          <tr>
+            <th>2012</th>
+            <td>£61.50</td>
+          </tr>
+        </table>
+        <i class="ons-icon onsi-food"></i>
+        <h2>Food and non-alcoholic drinks</h2>
+        <p>E.g. households spent on average £7.40 on fruit and vegetables, £3.60 in cakes and biscuits.</p>
+        <table class="ons-bar ons-horizontal-only">
+          <tr>
+            <th>2011</th>
+            <td>£56.60</td>
+          </tr>
+          <tr>
+            <th>2012</th>
+            <td>£56.80</td>
+          </tr>
+        </table>
+        <i class="ons-icon onsi-clothing"></i>
+        <h2>Clothing and footwear</h2>
+        <p>E.g. households spent on average £8.10 on women’s outer garments and £5.00 on men’s outer garments per week in 2012.</p>
+        <table class="ons-bar ons-horizontal-only">
+          <tr>
+            <th>2011</th>
+            <td>£21.90</td>
+          </tr>
+          <tr>
+            <th>2012</th>
+            <td>£23.40</td>
+          </tr>
+        </table>
+      </article>
+    </section>
+  </body>
 </html>

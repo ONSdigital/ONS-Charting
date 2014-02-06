@@ -24,13 +24,18 @@
 
 		Plugin.prototype = {
 				init: function () {
-						this.settings.overBreakpoint = this.overBreakpoint(); // Check if over breakpoint
-						this.instance.table = this.$el.find('table'); // Find the data table TODO throw polite error if no table
-						var that = this; // Crockford! http://javascript.crockford.com/private.html
-						$(window).resize(function(){
-              that.checkBreakpoint();
-            });
-            this.create(); // Start the creation process
+					this.settings.overBreakpoint = this.overBreakpoint(); // Check if over breakpoint
+					this.instance.table = this.$el.find('table'); // Find the data table TODO throw polite error if no table
+					var that = this; // Crockford! http://javascript.crockford.com/private.html
+					$(window).resize(function(){
+            that.checkBreakpoint();
+          });
+          if (this.supported) {
+            $('body').addClass('svg');
+          } else {
+            $('body').addClass('no-svg');
+          }
+          this.create(); // Start the creation process
 				},
         supported: function() { 
           // Simple check to see if the browser can render SVG
@@ -49,11 +54,11 @@
             this.create();
           }
         },
-        createSVG: function() {
+        createSVG: function($table) {
           // Creates the SVG element and gives it Snap capabilites.
           this.instance.rid = "ons-rid-"+(Math.random().toString(36)+'00000000000000000').slice(2, 5+2);
           this.instance.chartWrap = $('<div class="ons-chart-wrap"><svg viewBox="0 0 '+this.settings.base_size.x+' '+this.settings.base_size.y+'" preserveAspectRatio="xMinYMin meet" id="'+this.instance.rid+'"></svg></div>');
-          this.$el.append(this.instance.chartWrap);
+          $table.after(this.instance.chartWrap);
           this.instance.svg = Snap("#"+this.instance.rid);
         },
         addWrapperPadding: function() {
@@ -63,40 +68,51 @@
             'padding-bottom': padding+"%"
           });
         },
+        sanitizeNumber: function(value) {
+          return Number( parseFloat(value.replace(/[^0-9\.]+/g,"")));
+        },
         destroy: function() {
           // Removes the chart element from the DOM
-          this.instance.chartWrap.remove();
+          this.$el.find('.ons-chart-wrap').remove();
         },
         create: function() {
-          // Simple wrapper to check class and trigger the correct chart builder. Should this be a switch? Maybe, maybe not. Depends on who you listen to
-          if (this.supported()) {
-            if (this.$el.hasClass('ons-bar')) {
-              this.instance.table.hide(); // Don't DRY this! You only want to hide the table if SVG is supported *AND* it has a chart class.
-              this.barChart();
+          that = this;
+          $.each(this.instance.table, function(i,e){
+            $e = $(e);
+            // Simple wrapper to check class and trigger the correct chart builder. Should this be a switch? Maybe, maybe not. Depends on who you listen to
+            if (that.supported()) {
+              if ($e.hasClass('ons-bar')) {
+                $e.hide(); // Don't DRY this! You only want to hide the table if SVG is supported *AND* it has a chart class.
+                that.barChart($e);
+              }
+              if ($e.hasClass('ons-bar-alt')) {
+                $e.hide();
+                that.barChartAlt($e);
+              }
             }
-            if (this.$el.hasClass('ons-bar-alt')) {
-              this.instance.table.hide();
-              this.barChartAlt();
+          });
+        },
+        barChart: function($table) {
+          // Trigger the right chart creation for the current breakpoint status
+          if ($table.hasClass('ons-horizontal-only')) {
+            this.barChartN($table);
+          } else {
+            if ( this.settings.overBreakpoint ) {
+              this.barChartW($table);
+            } else {
+              this.barChartN($table);
             }
           }
         },
-        barChart: function() {
+        barChartAlt: function($table) {
           // Trigger the right chart creation for the current breakpoint status
           if ( this.settings.overBreakpoint ) {
-            this.barChartW();
+            this.barChartAltW($table);
           } else {
-            this.barChartN();
+            this.barChartAltN($table);
           }
         },
-        barChartAlt: function() {
-          // Trigger the right chart creation for the current breakpoint status
-          if ( this.settings.overBreakpoint ) {
-            this.barChartAltW();
-          } else {
-            this.barChartAltN();
-          }
-        },
-        barChartW: function() {
+        barChartW: function($table) {
           // Chart for low value count (10 or less), vertical bars in a large screen configuration. Labels underneath
           // Sizes are relative as the resulting SVG is responsive
           this.settings.base_size = {
@@ -108,9 +124,9 @@
             'x': 1280,
             'y': 620,
           };
-          this.createSVG();
+          this.createSVG($table);
           this.addWrapperPadding();
-          var count = this.instance.table.find('th').length; // Find how many headers there are, assumes a single layer of data
+          var count = $table.find('th').length; // Find how many headers there are, assumes a single layer of data
           var spacer = this.settings.chart_size.x/100; // Gap between the bars
           var jump = (this.settings.chart_size.x+spacer)/count; // Distance between each bar's start coordinate
           
@@ -145,8 +161,8 @@
           var x = 0;
           var that = this;
           // Loop through each found TD element
-          $.each(this.instance.table.find('td'), function(i, e){
-            var height = parseFloat($(e).html()) / 100; // Take the percentage value and convert to a decimal
+          $.each($table.find('td'), function(i, e){
+            var height = that.sanitizeNumber($(e).html()) / 100; // Take the percentage value and convert to a decimal
             // Draw the bar, and store a ref to all for styling later
             var r = that.instance.svg.rect(
               x, 
@@ -164,7 +180,7 @@
           
           // Draw the labels under the x-axis
           x = 0;
-          $.each(this.instance.table.find('th'), function(i, e){
+          $.each($table.find('th'), function(i, e){
             // Draw the label centered under the bar, and store a ref to all for styling later
             var t = that.instance.svg.text(
               x + (jump/2) - spacer, 
@@ -181,7 +197,7 @@
           
           // Get values and draw bars
           x = 0;
-          $.each(this.instance.table.find('td'), function(i, e){
+          $.each($table.find('td'), function(i, e){
             var t = that.instance.svg.text(
               x + (jump/2) - spacer, 
               that.settings.base_size.y - ((that.settings.base_size.y - that.settings.chart_size.y) / 5),
@@ -196,11 +212,11 @@
             x+=jump;
           });
         },
-        barChartN: function() {
+        barChartN: function($table) {
           // Chart for low value count (10 or less), vertical bars in a narrow screen configuration. Bars horizontal, labels underneath.
           // Sizes are relative as the resulting SVG is responsive
           
-          var count = this.instance.table.find('th').length;
+          var count = $table.find('th').length;
           var jump = 90;
 
           this.settings.base_size = {
@@ -213,13 +229,15 @@
             'y': jump * count,
           };
           
-          this.createSVG();
+          this.createSVG($table);
           this.addWrapperPadding();
           
           var maxwidth = 0;
           
+          var that = this;
+          
           $.each(this.instance.table.find('td'), function(i, e){
-            var newWidth = parseFloat($(e).html()) / 100;
+            var newWidth = that.sanitizeNumber($(e).html()) / 100;
             if ( newWidth > maxwidth) {
               maxwidth = newWidth;
             }
@@ -230,8 +248,10 @@
           var y = 0;  
           var that = this;
           
-          $.each(this.instance.table.find('td'), function(i, e){
-            var width = parseFloat($(e).html()) / 100;
+          $.each($table.find('td'), function(i, e){
+            var width = that.sanitizeNumber($(e).html());
+            width *= 0.01;
+            console.log(width);
             // Bars
             var b = that.instance.svg.rect(0, y, (that.settings.chart_size.x * width) * widthMult, 30, 5).attr({ 
               fill: "#0088CE"
@@ -240,7 +260,7 @@
             var l = that.instance.svg.text(
               0,
               y+60,
-              $(that.instance.table.find('th')[i]).text()
+              $($table.find('th')[i]).text()
             ).attr({
                 'font-size': '25px',
                 'text-anchor': 'left',
@@ -278,8 +298,8 @@
             y+=jump;
           });
         },
-        barChartAltW: function() {
-          var count = this.instance.table.find('th').length;
+        barChartAltW: function($table) {
+          var count = $table.find('th').length;
           var jump = 30;
           
           this.settings.base_size = {
@@ -287,7 +307,7 @@
             'y': jump * count + (jump * 2.5),
           };
           
-          this.createSVG();
+          this.createSVG($table);
           this.addWrapperPadding();
           
           var maxValue = 0;
@@ -299,8 +319,8 @@
           
           var that = this;
 
-          $.each(this.instance.table.find('td'), function(i, e){
-            var newMax = parseFloat($(e).html()) / 100;
+          $.each($table.find('td'), function(i, e){
+            var newMax = that.sanitizeNumber($(e).html()) / 100;
             if ( newMax > maxValue) {
               maxValue = newMax;
             }
@@ -308,7 +328,7 @@
             var l = that.instance.svg.text(
               -100,
               -100,
-              $(that.instance.table.find('th')[i]).text()
+              $($table.find('th')[i]).text()
             );
             
             if ( l.getBBox().width > labelSpace) labelSpace = l.getBBox().width
@@ -372,8 +392,8 @@
                 'fill': '#939598'
             });
           }
-          $.each(this.instance.table.find('td'), function(i, e){
-            var width = parseFloat($(e).html()) / maxScale;
+          $.each($table.find('td'), function(i, e){
+            var width = that.sanitizeNumber($(e).html()) / maxScale;
             
             // Bars
             var fillColour = "#90B0C9";
@@ -397,7 +417,7 @@
             var l = that.instance.svg.text(
               0,
               y+67,
-              $(that.instance.table.find('th')[i]).text()
+              $($table.find('th')[i]).text()
             ).attr({
                 'font-size': '20px',
                 'text-anchor': 'left',
@@ -405,12 +425,12 @@
             });
             
             // Hovers
-            that.hoverLabel(b, that, width, y-17, i, e, labelSpace);
+            that.hoverLabel(b, that, width, y-17, i, e, labelSpace, $table);
             y+=jump;
           });
         },
-        barChartAltN: function() {
-          var count = this.instance.table.find('th').length;
+        barChartAltN: function($table) {
+          var count = $table.find('th').length;
           var jump = 52;
           
           this.settings.base_size = {
@@ -423,7 +443,7 @@
             'y': jump * count + jump,
           };
                     
-          this.createSVG();
+          this.createSVG($table);
           this.addWrapperPadding();
           
           var maxValue = 0;
@@ -435,8 +455,8 @@
           
           var that = this;
 
-          $.each(this.instance.table.find('td'), function(i, e){
-            var newMax = parseFloat($(e).html()) / 100;
+          $.each($table.find('td'), function(i, e){
+            var newMax = that.sanitizeNumber($(e).html()) / 100;
             if ( newMax > maxValue) {
               maxValue = newMax;
             }
@@ -491,8 +511,8 @@
 
           }
 
-          $.each(this.instance.table.find('td'), function(i, e){
-            var width = parseFloat($(e).html()) / maxScale;
+          $.each($table.find('td'), function(i, e){
+            var width = that.sanitizeNumber($(e).html()) / maxScale;
             
             // Bars
             var fillColour = "#90B0C9";
@@ -501,8 +521,7 @@
             }
             
             var b = that.instance.svg.rect(0, y+67, (that.settings.chart_size.x * width) / 100, 20, 5).attr({ 
-              fill: fillColour,
-              cursor: 'pointer'
+              fill: fillColour
             });
             
             // Labels
@@ -516,7 +535,7 @@
             var l = that.instance.svg.text(
               0,
               y+60,
-              $(that.instance.table.find('th')[i]).text()
+              $($table.find('th')[i]).text()
             ).attr({
                 'font-size': '20px',
                 'text-anchor': 'left',
@@ -525,12 +544,12 @@
             
             // Hovers
             
-            that.hoverLabel(b, that, width, y, i, e, 0);
+            that.hoverLabel(b, that, width, y, i, e, 0, $table);
                       
             y+=jump;
           });
         },
-        hoverLabel: function(b, that, width, y, i, e, labelSpace){
+        hoverLabel: function(b, that, width, y, i, e, labelSpace, $table){
           var hoverSpot = that.instance.svg.circle(
             labelSpace + ((that.settings.chart_size.x * width) / 100) * 0.5, 
             y+77, 
@@ -565,7 +584,7 @@
           var hoverLabelA = that.instance.svg.text(
               labelSpace+45,
               yrect + 33,
-              $(that.instance.table.find('th')[i]).text()
+              $($table.find('th')[i]).text()
             ).attr({
                 'font-size': '25px',
                 'font-weight': 'bold',
@@ -595,6 +614,16 @@
             visibility: 'hidden'
           });
           
+          g.hover(function(){
+            g.attr({
+              visibility: 'visible'
+            });
+          },function(){
+            g.attr({
+              visibility: 'hidden'
+            });
+          });
+
           b.hover(function(){
             g.attr({
               visibility: 'visible'

@@ -4,7 +4,9 @@
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility; }
+  text-rendering: optimizeLegibility;
+  /* default styling for a visible table */
+  /* icon styling */ }
   .ons-chart h1, .ons-chart h2, .ons-chart h3, .ons-chart h4, .ons-chart h5, .ons-chart h6 {
     line-height: 1.2em;
     letter-spacing: -0.03em;
