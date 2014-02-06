@@ -4,9 +4,7 @@
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  /* default styling for a visible table */
-  /* icon styling */ }
+  text-rendering: optimizeLegibility; }
   .ons-chart h1, .ons-chart h2, .ons-chart h3, .ons-chart h4, .ons-chart h5, .ons-chart h6 {
     line-height: 1.2em;
     letter-spacing: -0.03em;
@@ -40,9 +38,15 @@
       border-bottom: 0; }
   .ons-chart .ons-icon {
     display: block;
-    width: 75px;
-    height: 75px;
+    width: 50px;
+    height: 50px;
     margin: 10px auto; }
+
+.svg .ons-chart .ons-icon {
+  background: red; }
+
+.no-svg .ons-chart .ons-icon {
+  background: black; }
 
 .ons-chart-wrap {
   position: relative;
