@@ -19,6 +19,13 @@
 				this.instance = {}; // So each instance is a seperate entity
 				this._defaults = defaults;
 				this._name = pluginName;
+        
+        // Define Colour Options
+
+				this.settings.colours=[];
+				this.settings.colours[0] = ["#0084D1"]
+				this.settings.colours[1] = ["#0084D1", "#FF950E", "#A9BE3A", "#FFD320"]
+				
 				this.init(); // Kick off!
 		}
 
@@ -70,6 +77,13 @@
         },
         sanitizeNumber: function(value) {
           return Number( parseFloat(value.replace(/[^0-9\.]+/g,"")));
+        },
+        defineColours: function($table) {
+          if ($table.hasClass('ons-colour')) {
+            return this.settings.colours[1];
+          } else {
+            return this.settings.colours[0];
+          }
         },
         destroy: function() {
           // Removes the chart element from the DOM
@@ -160,8 +174,19 @@
           // Draw the bars
           var x = 0;
           var that = this;
+          
+          var colours = this.defineColours($table);
+          var colourIndex = 0;
+          
           // Loop through each found TD element
           $.each($table.find('td'), function(i, e){
+            
+            // Set Fill Colour
+            var colour = colours[colourIndex];
+            colourIndex++
+            if (colourIndex >= colours.length) colourIndex = 0;
+            
+            
             var height = that.sanitizeNumber($(e).html()) / 100; // Take the percentage value and convert to a decimal
             // Draw the bar, and store a ref to all for styling later
             var r = that.instance.svg.rect(
@@ -173,7 +198,7 @@
             );
             // Style the bar
             r.attr({ 
-              fill: "#0088CE"
+              fill: colour
             });
             x+=jump; // increment the base x position by the amount defined above
           });
@@ -248,13 +273,21 @@
           var y = 0;  
           var that = this;
           
+          var colours = this.defineColours($table);
+          var colourIndex = 0;
+          
           $.each($table.find('td'), function(i, e){
+
+            // Set Fill Colour
+            var colour = colours[colourIndex];
+            colourIndex++
+            if (colourIndex >= colours.length) colourIndex = 0;
+
             var width = that.sanitizeNumber($(e).html());
             width *= 0.01;
-            console.log(width);
             // Bars
             var b = that.instance.svg.rect(0, y, (that.settings.chart_size.x * width) * widthMult, 30, 5).attr({ 
-              fill: "#0088CE"
+              fill: colour
             });
             // Labels
             var l = that.instance.svg.text(
