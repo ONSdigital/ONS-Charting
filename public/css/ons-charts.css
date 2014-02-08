@@ -38,15 +38,9 @@
       border-bottom: 0; }
   .ons-chart .ons-icon {
     display: block;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     margin: 10px auto; }
-
-.svg .ons-chart .ons-icon {
-  background: red; }
-
-.no-svg .ons-chart .ons-icon {
-  background: black; }
 
 .ons-chart-wrap {
   position: relative;

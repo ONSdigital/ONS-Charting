@@ -9,6 +9,12 @@
       <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
       <link rel="stylesheet" href="css/app.css"/>
       <link rel="stylesheet" href="css/ons-charts.css"/>
+
+  		<script>
+  		/* grunticon Stylesheet Loader | https://github.com/filamentgroup/grunticon | (c) 2012 Scott Jehl, Filament Group, Inc. | MIT license. */
+  		window.grunticon=function(e){if(e&&3===e.length){var t=window,n=!(!t.document.createElementNS||!t.document.createElementNS("http://www.w3.org/2000/svg","svg").createSVGRect||!document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image","1.1")||window.opera&&-1===navigator.userAgent.indexOf("Chrome")),o=function(o){var r=t.document.createElement("link"),a=t.document.getElementsByTagName("script")[0];r.rel="stylesheet",r.href=e[o&&n?0:o?1:2],a.parentNode.insertBefore(r,a)},r=new t.Image;r.onerror=function(){o(!1)},r.onload=function(){o(1===r.width&&1===r.height)},r.src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="}};
+  		grunticon( [ "css/icons.data.svg.css", "css/icons.data.png.css", "css/icons.fallback.css" ] );</script>
+
       <script src="js/jquery-1.10.2.js"></script>
       <script src="js/snap.svg-min.js"></script>
       <script src="js/src/jquery.ons-charts.js"></script>
@@ -255,7 +261,7 @@
       <article class="ons-chart">
         <h1>2011 VS 2012</h1>
         <p>In 2011, the average household spend was £497 per week. Transport has been the longstanding highest spend, but in 2012 the biggest spend was on housing, fuel and power (excluding mortgages). Adjustments have been made for inflation and all these figures are at 2012 prices.</p>
-        <i class="ons-icon onsi-housing"></i>
+        <i class="ons-icon icon-onsi-housing"></i>
         <h2>Housing, fuel and power (excluding mortgages)</h2>
         <p>E.g. households spent on average £10.80 on electricity and £10.40 on gas per week in 2012.</p>
         <table class="ons-bar ons-horizontal-only ons-colour">
@@ -268,7 +274,7 @@
             <td>£68.00</td>
           </tr>
         </table>
-        <i class="ons-icon onsi-transport"></i>
+        <i class="ons-icon icon-onsi-transport"></i>
         <h2>Transport</h2>
         <p>E.g. households spent on average £24.70 on petrol, diesel and other motor oils per week in 2012.</p>
         <table class="ons-bar ons-horizontal-only ons-colour">
@@ -281,7 +287,7 @@
             <td>£64.10</td>
           </tr>
         </table>
-        <i class="ons-icon onsi-recreation"></i>
+        <i class="ons-icon icon-onsi-recreation"></i>
         <h2>Recreation and culture</h2>
         <p>E.g. households spent on average £18.20 on package hoildays per week in 2012.</p>
         <table class="ons-bar ons-horizontal-only ons-colour">
@@ -294,7 +300,7 @@
             <td>£61.50</td>
           </tr>
         </table>
-        <i class="ons-icon onsi-food"></i>
+        <i class="ons-icon icon-onsi-food"></i>
         <h2>Food and non-alcoholic drinks</h2>
         <p>E.g. households spent on average £7.40 on fruit and vegetables, £3.60 in cakes and biscuits.</p>
         <table class="ons-bar ons-horizontal-only ons-colour">
@@ -307,7 +313,7 @@
             <td>£56.80</td>
           </tr>
         </table>
-        <i class="ons-icon onsi-clothing"></i>
+        <i class="ons-icon icon-onsi-clothing"></i>
         <h2>Clothing and footwear</h2>
         <p>E.g. households spent on average £8.10 on women’s outer garments and £5.00 on men’s outer garments per week in 2012.</p>
         <table class="ons-bar ons-horizontal-only ons-colour">
@@ -320,6 +326,502 @@
             <td>£23.40</td>
           </tr>
         </table>
+      </article>
+    </section>
+    <section>
+      <p>Basic Line Chart</p>
+      <article class="ons-chart">
+        <h1>Divorce Rate 1950 To 2011</h1>
+  <table class="ons-line-single" data-min="0" data-max="200000" data-label-skip="10">
+    <tr>
+      <th>
+        1950
+      </th>
+      <td>
+        28767
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1951
+      </th>
+      <td>
+        33922
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1952
+      </th>
+      <td>
+        30326
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1953
+      </th>
+      <td>
+        28027
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1954
+      </th>
+      <td>
+        26816
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1955
+      </th>
+      <td>
+        26265
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1956
+      </th>
+      <td>
+        23785
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1957
+      </th>
+      <td>
+        22654
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1958
+      </td>
+      <td>
+        24286
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1959
+      </th>
+      <td>
+        23868
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1960
+      </th>
+      <td>
+        25394
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1961
+      </th>
+      <td>
+        28936
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1962
+      </th>
+      <td>
+        32052
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1963
+      </th>
+      <td>
+        34868
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1964
+      </th>
+      <td>
+        37785
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1965
+      </th>
+      <td>
+        39067
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1966
+      </th>
+      <td>
+        43093
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1967
+      </th>
+      <td>
+        45794
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1968
+      </th>
+      <td>
+        51310
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1969
+      </th>
+      <td>
+        58239
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1970
+      </th>
+      <td>
+        74437
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1971
+      </th>
+      <td data-callout="1971 - Divorce Reform Act made it easier to divorce">
+        119025
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1972
+      </th>
+      <td>
+        106003
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1973
+      </th>
+      <td>
+        113500
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1974
+      </th>
+      <td>
+        120522
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1975
+      </th>
+      <td>
+        126694
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1976
+      </th>
+      <td>
+        129053
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1977
+      </th>
+      <td>
+        143667
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1978
+      </th>
+      <td>
+        138746
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1979
+      </th>
+      <td>
+        148301
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1980
+      </th>
+      <td>
+        145713
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1981
+      </th>
+      <td>
+        146698
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1982
+      </th>
+      <td>
+        147479
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1983
+      </th>
+      <td>
+        144501
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1984
+      </th>
+      <td>
+        160300
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1985
+      </th>
+      <td>
+        153903
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1986
+      </th>
+      <td>
+        151007
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1987
+      </th>
+      <td>
+        152633
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1988
+      </th>
+      <td>
+        150872
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1989
+      </th>
+      <td>
+        153386
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1990
+      </th>
+      <td>
+        158745
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1991
+      </th>
+      <td>
+        160385
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1992
+      </td>
+      <td>
+        158175
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1993
+      </th>
+      <td data-callout="1993 - Record high 165,000 divorces">
+        165018
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1994
+      </th>
+      <td>
+        155499
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1995
+      </th>
+      <td>
+        157107
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1996
+      </th>
+      <td>
+        146689
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1997
+      </th>
+      <td>
+        145214
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1998
+      </th>
+      <td>
+        144556
+      </td>
+    </tr>
+    <tr>
+      <th>
+        1999
+      </th>
+      <td>
+        141135
+      </td>
+    </tr>
+    <tr>
+      <th>
+        2000
+      </th>
+      <td>
+        143818
+      </td>
+    </tr>
+    <tr>
+      <th>
+        2001
+      </th>
+      <td>
+        147735
+      </td>
+    </tr>
+    <tr>
+      <th>
+        2002
+      </th>
+      <td>
+        153065
+      </td>
+    </tr>
+    <tr>
+      <th>
+        2003
+      </th>
+      <td>
+        152923
+      </td>
+    </tr>
+    <tr>
+      <th>
+        2004
+      </th>
+      <td>
+        141322
+      </td>
+    </tr>
+    <tr>
+      <th>
+        2005
+      </th>
+      <td>
+        132140
+      </td>
+    </tr>
+    <tr>
+      <th>
+        2006
+      </th>
+      <td>
+        128131
+      </td>
+    </tr>
+    <tr>
+      <th>
+        2007
+      </th>
+      <td>
+        121708
+      </td>
+    </tr>
+    <tr>
+      <th>
+        2008
+      </th>
+      <td>
+        113949
+      </td>
+    </tr>
+    <tr>
+      <th>
+        2009
+      </th>
+      <td>
+        119589
+      </td>
+    </tr>
+    <tr>
+      <th>
+        2010
+      </th>
+      <td>
+        117558
+      </td>
+    </tr>
+  </table>
       </article>
     </section>
   </body>

@@ -109,6 +109,10 @@
                 $e.hide();
                 that.barChartAlt($e);
               }
+              if ($e.hasClass('ons-line-single')) {
+                $e.hide();
+                that.lineChartSingle($e);
+              }
             }
           });
         },
@@ -582,17 +586,302 @@
             y+=jump;
           });
         },
-        hoverLabel: function(b, that, width, y, i, e, labelSpace, $table){
+        lineChartSingle: function($table) {
+          // Trigger the right chart creation for the current breakpoint status
+          if ( this.settings.overBreakpoint ) {
+            this.lineChartSingleW($table);
+          } else {
+            this.lineChartSingleN($table);
+          }
+        },
+        lineChartSingleN: function($table) {
+          var count = $table.find('th').length;
+          var jump = 20;
+          
+          this.settings.base_size = {
+            'x': 640,
+            'y': jump * count + (jump * 1.5),
+          };
+          
+          this.createSVG($table);
+          this.addWrapperPadding();
+          
+          var that = this;
+          
+          labelSpace = 0;
+
+          $.each($table.find('th'), function(i, e){
+            var l = that.instance.svg.text(
+              -100,
+              -100,
+              $(this).text()
+            );
+            
+            if ( l.getBBox().width > labelSpace) labelSpace = l.getBBox().width
+            
+            l.remove();
+            
+          });
+          
+          labelSpace += 40;
+          
+          this.settings.chart_size = {
+            'x': 640 - labelSpace,
+            'y': jump * count + jump,
+          };
+          
+          this.settings.min = $table.data('min');
+          this.settings.max = $table.data('max');
+          this.settings.labelSkip = $table.data('label-skip');
+                    
+          // Draw Lines and Legend
+          
+          for (x = 0; x <= 1; x+=0.25) {
+            this.instance.svg.line(
+              labelSpace+this.settings.chart_size.x*x, 
+              30, 
+              labelSpace+this.settings.chart_size.x*x, 
+              this.settings.chart_size.y).attr({
+                stroke: "#999999",
+                'stroke-dasharray': "3,3"
+            });
+            
+            if (x > 0 && x < 1) {
+              var l = that.instance.svg.text(
+                labelSpace+this.settings.chart_size.x*x,
+                23,
+                this.settings.max * x
+              ).attr({
+                  'font-size': '20px',
+                  'font-weight': "bold",
+                  'text-anchor': "middle",
+                  'fill': '#939598'
+              });
+            }
+
+          }
+          
+          var x = labelSpace;
+          var y = 50;
+          var polyline = new Array();
+          polyline.push(x);
+          polyline.push(y);
+
+          $.each($table.find('td'), function(i, e){
+            x = labelSpace + (that.sanitizeNumber($(e).html()) / that.settings.max) * that.settings.chart_size.x;
+            polyline.push(x);
+            polyline.push(y);
+            y+=jump;
+          });   
+          
+          polyline.push(labelSpace);
+          polyline.push(y);
+
+          var pl = that.instance.svg.polyline(polyline);
+          
+          pl.attr({
+            'fill': '#0084D1' 
+          })
+          
+          y=70;    
+
+          $.each($table.find('th'), function(i, e){
+            // Labels
+            if ((i+1) % that.settings.labelSkip == 1) {
+              var l = that.instance.svg.text(
+                0,
+                y,
+                $(this).text()
+              ).attr({
+                  'font-size': '20px',
+                  'text-anchor': 'left',
+                  'fill': '#333'
+              });
+            }
+            y+=jump;
+          });          
+
+          y=50;    
+
+          $.each($table.find('td'), function(i, e){
+            if ($(this).data('callout')) {
+              x = labelSpace + (that.sanitizeNumber($(e).html()) / that.settings.max) * that.settings.chart_size.x;
+              that.calloutLabel($(this).data('callout'), x, y, 'auto', that, labelSpace, $table);
+            }
+            y+=jump;
+          });          
+
+        },
+        lineChartSingleW: function($table) {
+          
+          this.settings.base_size = {
+            'x': 1280,
+            'y': 720,
+          };
+          
+          this.settings.chart_size = {
+            'x': 1280,
+            'y': 650,
+          };
+
+          this.createSVG($table);
+          this.addWrapperPadding();
+          
+          var count = $table.find('th').length;
+          var jump = this.settings.chart_size.x / count+1;
+          
+          var that = this;
+          
+          this.settings.min = $table.data('min');
+          this.settings.max = $table.data('max');
+          this.settings.labelSkip = $table.data('label-skip');
+                    
+          // Draw Lines and Legend
+          
+          for (y = 0; y <= 1; y+=0.25) {
+            this.instance.svg.line(
+              0, 
+              y * this.settings.chart_size.y, 
+              this.settings.chart_size.x, 
+              y * this.settings.chart_size.y).attr({
+                stroke: "#999999",
+                'stroke-dasharray': "3,3"
+            });
+            
+            if (y > 0 && y < 1) {
+              var l = that.instance.svg.text(
+                0,
+                y * this.settings.chart_size.y - 10,
+                this.settings.max - this.settings.max * y
+              ).attr({
+                  'font-size': '20px',
+                  'font-weight': "bold",
+                  'text-anchor': "left",
+                  'fill': '#939598'
+              });
+            }
+          }
+          
+          var x = 0;
+          var y = this.settings.chart_size.y;
+          var polyline = new Array();
+          polyline.push(x);
+          polyline.push(y);
+
+          $.each($table.find('td'), function(i, e){
+            y = that.settings.chart_size.y - (that.sanitizeNumber($(e).html()) / that.settings.max) * that.settings.chart_size.y;
+            polyline.push(x);
+            polyline.push(y);
+            x+=jump;
+          });   
+          
+          polyline.push(x-jump);
+          polyline.push(this.settings.chart_size.y);
+
+          var pl = that.instance.svg.polyline(polyline);
+          
+          pl.attr({
+            'fill': '#0084D1' 
+          })
+          
+          x=0;    
+
+          $.each($table.find('th'), function(i, e){
+            // Labels
+            if ((i+1) % that.settings.labelSkip == 1) {
+              var l = that.instance.svg.text(
+                x,
+                that.settings.chart_size.y + 25,
+                $(this).text()
+              ).attr({
+                  'font-size': '20px',
+                  'text-anchor': 'left',
+                  'fill': '#333'
+              });
+            }
+            x+=jump;
+          });          
+
+          x=0;    
+
+          $.each($table.find('td'), function(i, e){
+            if ($(this).data('callout')) {
+              y = that.settings.chart_size.y - (that.sanitizeNumber($(e).html()) / that.settings.max) * that.settings.chart_size.y;
+              that.calloutLabel($(this).data('callout'), x, y, 550, that, 0, $table);
+            }
+            x+=jump;
+          });          
+
+        },
+        calloutLabel: function(copy, x, y, width, that, labelSpace, $table) {
+          var hoverSpot = that.instance.svg.circle(
+            x, 
+            y, 
+            12);
+
+            var hoverLine = that.instance.svg.line(
+              x, 
+              y, 
+              x, 
+              y-50).attr({
+                stroke: "#000",
+                strokeWidth: 3,
+                'stroke-dasharray': "0,0"
+            });
+            
+            if (width == "auto") {
+              var hoverRect = that.instance.svg.rect(
+                labelSpace + (that.settings.chart_size.x * 0.05), 
+                y - 105, 
+                (that.settings.chart_size.x - labelSpace) * 1, 80, 5)
+              .attr({ 
+                fill: "white",
+                stroke: "black",
+                strokeWidth: 3
+              });
+
+              var hoverLabelA = that.instance.svg.text(
+                labelSpace + (that.settings.chart_size.x * 0.5),
+                y-57,
+                copy
+              ).attr({
+                'font-size': '20px',
+                'font-weight': 'normal',
+                'text-anchor': 'middle',
+                'fill': "#333"
+              });
+            } else {
+              var hoverRect = that.instance.svg.rect(
+                x - width/2, 
+                y - 105, 
+                width, 80, 5)
+              .attr({ 
+                fill: "white",
+                stroke: "black",
+                strokeWidth: 3
+              });
+
+              var hoverLabelA = that.instance.svg.text(
+                x,
+                y-57,
+                copy
+              ).attr({
+                'font-size': '20px',
+                'font-weight': 'normal',
+                'text-anchor': 'middle',
+                'fill': "#333"
+              });
+            }
+
+
+        },
+        hoverLabel: function(b, that, width, y, i, e, labelSpace, $table) {
           var hoverSpot = that.instance.svg.circle(
             labelSpace + ((that.settings.chart_size.x * width) / 100) * 0.5, 
             y+77, 
             12);
           
           var yrect = y-27
-          
-          // if ( y < 50) {
-          //   yrect = y + 120;
-          // }   
           
           var hoverLine = that.instance.svg.line(
             labelSpace + ((that.settings.chart_size.x * width) / 100) * 0.5, 
